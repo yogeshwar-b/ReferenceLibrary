@@ -34,11 +34,45 @@ class Trie:
         for letter in node.children:
             self.dfs(node.children[letter],wordsofar+letter)
 
-wordlist=["hello","hella","word","hexa"]
+    def remove_word(self,word):
+        self.__removeword(self.root,word,0)
+
+    def __removeword(self,node,word,pos):
+        if pos==len(word):
+            node.isEnd=False
+            if len(node.children)==0:
+                return True
+            else:
+                return False
+
+        if word[pos] in node.children:
+            if self.__removeword(node.children[word[pos]],word,pos+1):
+                del node.children[word[pos]]
+                if len(node.children)==0:
+                    return True
+                else:
+                    return False
+        else:
+            return False
+
+
+wordlist=["hello","hella","word","hell","hexa","hexagon"]
 MyTrie= Trie()
 for w in wordlist:
     MyTrie.insert(w)
-print(MyTrie.search("hel"))
+
 print(MyTrie.search("he"))
-print(MyTrie.search("hex"))
 print(MyTrie.search("xyz"))
+
+print(MyTrie.search("hel"))
+MyTrie.remove_word("hell")
+print(MyTrie.search("hel"))
+
+MyTrie.remove_word("hella")
+print(MyTrie.search("hel"))
+
+print(MyTrie.search("hex"))
+MyTrie.remove_word("hexa")
+print(MyTrie.search("hex"))
+
+MyTrie.remove_word("xyz")
