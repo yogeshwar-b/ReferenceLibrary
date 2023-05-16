@@ -1,54 +1,55 @@
-#Basic Trie Implementation in Python
+# Basic Trie Implementation in Python
 class TrieNode:
     def __init__(self):
-        self.children={} #Empty child dictionary
-        self.isEnd=False
+        self.children = {}  # Empty child dictionary
+        self.isEnd = False
+
 
 class Trie:
     def __init__(self):
-        self.root=TrieNode()
-    
-    def insert(self,word):
-        node=self.root
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
         for letter in word:
             if letter not in node.children:
-                node.children[letter]=TrieNode()
-            node=node.children[letter]
-        node.isEnd=True
-    
-    def search(self,word):
-        #Searching upto word,then doing the dfs on that node to get all possible branches from that letter. 
-        self.results=[]
-        node=self.root
+                node.children[letter] = TrieNode()
+            node = node.children[letter]
+        node.isEnd = True
+
+    def search(self, word):
+        # Searching upto word,then doing the dfs on that node to get all possible branches from that letter.
+        self.results = []
+        node = self.root
         for letter in word:
             if letter in node.children:
-                node=node.children[letter]
+                node = node.children[letter]
             else:
                 return []
-        self.dfs(node,word)
+        self.dfs(node, word)
         return self.results
-    
-    def dfs(self,node,wordsofar):
+
+    def dfs(self, node, wordsofar):
         if node.isEnd:
             self.results.append(wordsofar)
         for letter in node.children:
-            self.dfs(node.children[letter],wordsofar+letter)
+            self.dfs(node.children[letter], wordsofar+letter)
 
-    def remove_word(self,word):
-        self.__removeword(self.root,word,0)
+    def remove_word(self, word):
+        self.__removeword(self.root, word, 0)
 
-    def __removeword(self,node,word,pos):
-        if pos==len(word):
-            node.isEnd=False
-            if len(node.children)==0:
+    def __removeword(self, node, word, pos):
+        if pos == len(word):
+            node.isEnd = False
+            if len(node.children) == 0:
                 return True
             else:
                 return False
 
         if word[pos] in node.children:
-            if self.__removeword(node.children[word[pos]],word,pos+1):
+            if self.__removeword(node.children[word[pos]], word, pos+1):
                 del node.children[word[pos]]
-                if len(node.children)==0:
+                if len(node.children) == 0:
                     return True
                 else:
                     return False
@@ -56,8 +57,8 @@ class Trie:
             return False
 
 
-wordlist=["hello","hella","word","hell","hexa","hexagon"]
-MyTrie= Trie()
+wordlist = ["hello", "hella", "word", "hell", "hexa", "hexagon"]
+MyTrie = Trie()
 for w in wordlist:
     MyTrie.insert(w)
 
